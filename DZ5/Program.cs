@@ -297,7 +297,6 @@ namespace DZ5
                 month_avg.Add(month.Key, sum / month.Value.Length);
             }
             return month_avg;
-
         }
 
         static void ReadMonthAvg(Dictionary<string, double> month_avg)
@@ -307,61 +306,14 @@ namespace DZ5
                 Console.WriteLine($"В {month.Key} средняя температура была {month.Value:F}");
             }
         }
+        
 
-        static void ReadMonthAVG(int[] months_avg)
-        {
-            for(int i = 0; i < 12; i++)
-            {
-                switch (i)
-                {
-                    case 0:
-                        Console.WriteLine($"В январе средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 1:
-                        Console.WriteLine($"В феврале средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 2:
-                        Console.WriteLine($"В марте средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 3:
-                        Console.WriteLine($"В апреле средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 4:
-                        Console.WriteLine($"В майе средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 5:
-                        Console.WriteLine($"В июне средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 6:
-                        Console.WriteLine($"В июле средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 7:
-                        Console.WriteLine($"В августе средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 8:
-                        Console.WriteLine($"В сентябре средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 9:
-                        Console.WriteLine($"В октябре средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 10:
-                        Console.WriteLine($"В ноябре средняя температура равна {months_avg[i]:F}");
-                        break;
-                    case 11:
-                        Console.WriteLine($"В декабре средняя температура равна {months_avg[i]:F}");
-                        break;
-                }
-            }
-        }
-
+       
         static void DoHomeWork3()
         {
             Random rnd = new Random();
 
             Console.WriteLine("Домашнее задание 3 ");
-            
-            double year_avg = 0;
-
 
             Dictionary<string, double> month_average = new Dictionary<string, double>();
             Dictionary<string, int[]> year = new Dictionary<string, int[]>();
@@ -413,19 +365,20 @@ namespace DZ5
                         break;
                 }
             }
-
-            
+            month_average = CalculateAverageTemperature(year);
+            ReadMonthAvg(month_average);
 
         }
 
+        
 
         static void Main(string[] link)
         {
-            //DoExercise1(link);
-            //DoExercise2();
-            //DoExercise3();
-            //DoHomeWork1(link);
-            //DoHomeWork2();
+            DoExercise1(link);
+            DoExercise2();
+            DoExercise3();
+            DoHomeWork1(link);
+            DoHomeWork2();
             DoHomeWork3();
 
 
