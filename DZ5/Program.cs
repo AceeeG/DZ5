@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Runtime.Serialization.Formatters;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace DZ5
 {
@@ -282,6 +279,11 @@ namespace DZ5
             Console.WriteLine("\n");
         }
 
+        /// <summary>
+        /// Вычисляет среднюю температуру за месяц
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns>Словарь со средними значениями</returns>
         static Dictionary<string, double> CalculateAverageTemperature(Dictionary<string, int[]> year)
         {
             Dictionary<string, double> month_avg = new Dictionary<string, double>();
@@ -308,12 +310,14 @@ namespace DZ5
         }
         
 
-       
+        /// <summary>
+        /// Выполняет домашнее задание 3
+        /// </summary>
         static void DoHomeWork3()
         {
             Random rnd = new Random();
 
-            Console.WriteLine("Домашнее задание 3 ");
+            Console.WriteLine("Домашнее задание 3 - считаем среднюю температуру за месяц");
 
             Dictionary<string, double> month_average = new Dictionary<string, double>();
             Dictionary<string, int[]> year = new Dictionary<string, int[]>();
@@ -325,7 +329,7 @@ namespace DZ5
                 {
                     month[j] = rnd.Next(-50, 50);
                 }
-                switch (i)
+                switch(i)
                 {
                     case 0:
                         year.Add("Январь", month);
