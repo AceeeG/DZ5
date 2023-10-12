@@ -61,6 +61,8 @@ namespace Exercises
         /// </summary>
         static void DoExercise1()
         {
+            Console.WriteLine("Задание 1 - заполняем и перемешиваем массив с картинками");
+
             List<Image> images = new List<Image>();
             List<int> image_num = new List<int>();
 
@@ -92,8 +94,41 @@ namespace Exercises
 
             
         }
-
-
+        
+        /// <summary>
+        /// Создает студента
+        /// </summary>
+        static void MakeStudent(Dictionary<string, Student> students_dict)
+        {
+            Student student1 = new Student();
+            Console.WriteLine("Введите фамилию студента\n");
+            student1.surname = Console.ReadLine();
+            Console.WriteLine("Введите имя студента\n");
+            student1.name = Console.ReadLine();
+            Console.WriteLine("Введите год рождения студента\n");
+            bool birth_year_flag = Int32.TryParse(Console.ReadLine(), out student1.birth_year);
+            if (!birth_year_flag)
+            {
+                do
+                {
+                    Console.WriteLine("Вы ввели не число, введите число\n");
+                    birth_year_flag = Int32.TryParse(Console.ReadLine(), out student1.birth_year);
+                } while (birth_year_flag);
+            }
+            Console.WriteLine("Введите доп.экзамен(Информатика, Физика, Английский), который студент сдавал\n");
+            student1.exam = Console.ReadLine();
+            Console.WriteLine("Ввведите количество баллов по нему\n");
+            bool points_flag = Int32.TryParse(Console.ReadLine(), out student1.points);
+            if (!points_flag)
+            {
+                do
+                {
+                    Console.WriteLine("Вы ввели не число, введите число\n");
+                    points_flag = Int32.TryParse(Console.ReadLine(), out student1.points);
+                } while (points_flag);
+            }
+            students_dict.Add(student1.surname + student1.name, student1);
+        }
 
 
         /// <summary>
@@ -142,34 +177,7 @@ namespace Exercises
                 {
                     case "новый студент":
                         ReadAllStudents(students_dict);
-                        Student student1 = new Student();
-                        Console.WriteLine("Введите фамилию студента\n");
-                        student1.surname = Console.ReadLine();
-                        Console.WriteLine("Введите имя студента\n");
-                        student1.name = Console.ReadLine();
-                        Console.WriteLine("Введите год рождения студента\n");
-                        bool birth_year_flag = Int32.TryParse(Console.ReadLine(), out student1.birth_year);
-                        if (!birth_year_flag)
-                        {
-                            do
-                            {
-                                Console.WriteLine("Вы ввели не число, введите число\n");
-                                birth_year_flag = Int32.TryParse(Console.ReadLine(), out student1.birth_year);
-                            } while (birth_year_flag);
-                        }
-                        Console.WriteLine("Введите доп.экзамен(Информатика, Физика, Английский), который студент сдавал\n");
-                        student1.exam = Console.ReadLine();
-                        Console.WriteLine("Ввведите количество баллов по нему\n");
-                        bool points_flag = Int32.TryParse(Console.ReadLine(), out student1.points);
-                        if (!points_flag)
-                        {
-                            do
-                            {
-                                Console.WriteLine("Вы ввели не число, введите число\n");
-                                points_flag = Int32.TryParse(Console.ReadLine(), out student1.points);
-                            } while (points_flag);
-                        }
-                        students_dict.Add(student1.surname + student1.name, student1);
+                        MakeStudent(students_dict);
                         ReadAllStudents(students_dict);
                         break;
                     case "удалить":
@@ -245,6 +253,7 @@ namespace Exercises
         /// <returns>true или false, означающие попала бабка в больницу или нет</returns>
         static bool GetToTheHospital(Queue<Granny> granny_queue, Stack<Hospital> hospitals)
         {
+
             int counter = 0;
             Granny granny = granny_queue.Dequeue();
             Stack<Hospital> hospitals_2 = new Stack<Hospital>();
@@ -310,13 +319,15 @@ namespace Exercises
         }
         static void DoExercise3()
         {
+            Console.WriteLine("3 задание - бабки и очередь");
+
             Queue<Granny> granny_queue = new Queue<Granny>();
             List<Granny> granny_list = new List<Granny>();
             Stack<Hospital> hospitals = new Stack<Hospital>();
 
             Hospital hospital_1 = new Hospital();
             hospital_1.name = "RKB";
-            hospital_1.sickness = new string[]{"орви", "артрит", "гайморит", "коронавирус"};
+            hospital_1.sickness = new string[] { "орви", "артрит", "гайморит", "коронавирус" };
             hospital_1.capacity = 0;
             hospital_1.max_capacity = 2;
 
@@ -327,6 +338,9 @@ namespace Exercises
             hospital_2.max_capacity = 5;
             int i = 0;
 
+            Hospital hospital_3 = new Hospital();
+            hospital_3.name = "Palata";
+            hospital_3.sickness = new string[] { "орви", "спид", "кашель", "перелом"};
 
             Console.WriteLine("Задание 3 - работа с бабульками\nСоздайте 5 бабуль\n");
             do
@@ -368,11 +382,69 @@ namespace Exercises
 
         }
 
+        static void DoExercise4()
+        {
+            Console.WriteLine("Задание 4 - обход графа в ширину");
+            Random rnd = new Random();
+            Queue<int> peaks = new Queue<int>();
+            Console.Write("Введите количество вершин\n");
+            int peak_count = int.Parse(Console.ReadLine()) - 1;
+            if (peak_count >= 3)
+            {
+                bool[] used_peak = new bool[peak_count + 1];
+                int[][] neighboring_peak = new int[peak_count + 1][];
+
+                for (int i = 0; i < peak_count + 1; i++)
+                {
+                    neighboring_peak[i] = new int[peak_count + 1];
+                    Console.Write($"\n{i + 1} вершина - [");
+                    for (int j = 0; j < peak_count + 1; j++)
+                    {
+                        neighboring_peak[i][j] = rnd.Next(0, 2);
+                    }
+                    neighboring_peak[i][i] = 0;
+                    foreach (var item in neighboring_peak[i])
+                    {
+                        Console.Write($" {item}");
+                    }
+                    Console.Write("]\n");
+                }
+                used_peak[peak_count] = true;
+                peaks.Enqueue(peak_count);
+                Console.WriteLine($"Начинаем обход с {peak_count + 1} вершины\n");
+                while (peaks.Count != 0)
+                {
+                    peak_count = peaks.Peek();
+                    peaks.Dequeue();
+                    Console.WriteLine($"Перешли к узлу {peak_count + 1}");
+
+                    for (int i = 0; i < neighboring_peak.Length; i++)
+                    {
+                        if (Convert.ToBoolean(neighboring_peak[peak_count][i]))
+                        {
+                            int v = i;
+                            if (!used_peak[v])
+                            {
+                                used_peak[v] = true;
+                                peaks.Enqueue(v);
+                                Console.WriteLine($"Добавили в очередь узел {v + 1}");
+                            }
+                        }
+
+
+
+                    }
+                }
+            }
+
+
+        }
         static void Main(string[] link)
         {
-            //DoExercise1();
+            DoExercise1();
             DoExercise2(link);
-            //DoExercise3();
+            DoExercise3();
+            DoExercise4();
 
             Console.ReadKey();
         }
