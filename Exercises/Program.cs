@@ -1,17 +1,8 @@
-﻿using Microsoft.SqlServer.Server;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.ExceptionServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 using System.Drawing;
-using System.Globalization;
-using System.Diagnostics.Eventing.Reader;
 
 namespace Exercises
 {
@@ -45,6 +36,63 @@ namespace Exercises
 
     internal class Program
     {
+        /// <summary>
+        /// Перемешивает индексы и картинки
+        /// </summary>
+        /// <param name="images"></param>
+        /// <param name="image_num"></param>
+        static void MixingImages(List<Image> images, List<int> image_num)
+        {
+            Random rnd = new Random();
+            for (int i = images.Count - 1; i >= 1; i--)
+            {
+                int j = rnd.Next(i + 1);
+                Image img = images[j];
+                int transition_num = image_num[j];
+                images[j] = images[i];
+                image_num[j] = image_num[i];
+                images[i] = img;
+                image_num[i] = transition_num;
+            }
+        }
+
+        /// <summary>
+        /// Выполняет упражнение 1
+        /// </summary>
+        static void DoExercise1()
+        {
+            List<Image> images = new List<Image>();
+            List<int> image_num = new List<int>();
+
+            for (int i = 0; i < 32; i++)
+            {
+                string img = "C:/Users/User/source/repos/DZ5/DZ5/Exercises/img/" + i.ToString() + ".png";
+                images.Add(Image.FromFile(img));
+                images.Add(Image.FromFile(img));
+            }
+            for(int j = 0; j < 64; j++)
+            {
+                image_num.Add(j);
+            }
+            MixingImages(images, image_num);
+            Console.WriteLine("Номера до перешивания\n");
+            foreach(int num in image_num)
+            {
+                Console.Write($"{num} ");
+            }
+            
+            Console.WriteLine("\nНомера после перешивания\n");
+            foreach (int num in image_num)
+            {
+                Console.Write($"{num} ");
+            }
+            
+
+
+
+            
+        }
+
 
 
 
@@ -73,15 +121,16 @@ namespace Exercises
             FileInfo student_file = new FileInfo(link[0]);
             Dictionary<string, Student> students_dict= new Dictionary<string, Student>();
 
-            string[] student_arr = File.ReadAllLines(link[0]);
+            List<string> student_list = File.ReadAllLines(link[0]).ToList();
             if (student_file.Exists)
             {
-                for (int i = 0; i < student_arr.Length; i++)
+                foreach(string stud in student_list)
                 {
-                    string[] student_data = student_arr[i].Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                    string[] split_stud = stud.Split(new[] { " " }, StringSplitOptions.None);
+                    string name = split_stud[0];
                     Student student = new Student();
 
-                    students_dict.Add(student_data[0] + student_data[1], student);
+                    students_dict.Add(split_stud[0] + split_stud[1], student);
                 }
                 Console.WriteLine("Введите <Новый студент>, если хотите создать нового студента\n" +
                     "Введите <Удалить>, чтобы удалить студента\n" +
@@ -138,6 +187,7 @@ namespace Exercises
                         break;
                     case "сортировать":
                         students_dict = students_dict.OrderBy(exam => exam.Value.exam).ToDictionary(exam => exam.Key, student => student.Value);
+                        ReadAllStudents(students_dict);
                         break;
                     default:
                         Console.WriteLine("Неверная команда");
@@ -320,8 +370,9 @@ namespace Exercises
 
         static void Main(string[] link)
         {
-            //DoExercise2(link);
-            DoExercise3();
+            //DoExercise1();
+            DoExercise2(link);
+            //DoExercise3();
 
             Console.ReadKey();
         }
